@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head th:include="fragments :: head_fragment(${student.name})"></head>
+
+<body>
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_profile_menu(page='Student Profile', prev_page='Students', link = @{/students})"></div>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-success'}"/>
+        <div th:if="${error}" th:text="${error}" th:class="${'alert alert-danger'}"/>
+        <div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div th:include="fragments :: profile_row(name='Full Name', value=${student.name})"></div>
+                    <div th:include="fragments :: profile_row(name='Gender', value=${student.gender})"></div>
+                    <div th:include="fragments :: profile_row(name='Payment form', value=${student.paymentForm})"></div>
+                    <div th:include="fragments :: profile_row(name='Birthdate', value=${student.birthdate})"></div>
+                    <div th:include="fragments :: profile_row(name='Phone', value=${student.phone})"></div>
+                    <div th:include="fragments :: profile_row(name='Email', value=${student.email})"></div>
+                    <div th:include="fragments :: profile_row(name='ROLE', value=${student.roles})"></div>
+
+                    <div th:if="${student.group != null}">
+                        <div class="row">
+                            <a th:href="@{/lectures/group(id=${student.group.id}, days = 0)}"
+                               class="btn btn-secondary w-25 mx-3"> <i
+                                    class="fa fa-arrow-circle-o-left"></i>Schedule</a>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div th:if="${student.group != null}">
+                        <div class="row">
+                            <a th:href="@{/groups/group(id=${student.group.id})}"
+                               th:text="'Group (' + ${student.group.groupName} +')'"
+                               class="btn btn-secondary w-25 mx-3"> <i
+                                    class="fa fa-arrow-circle-o-left"></i>Group</a>
+                        </div>
+                        <hr>
+                    </div>
+
+                    <div sec:authorize="hasAuthority('ADMIN')" class="row justify-content-end mt-5">
+                        <a th:href="@{/admin/edit_student(id=${student.id})}"
+                           class="col-2 p-2 align-self-start btn btn-success bg-gradient mx-3">Edit<i
+                                class="fa fa-arrow-circle-o-left"></i></a>
+                        <a th:href="@{/admin/delete_student(id=${student.id})}"
+                           class="col-2 p-2 align-self-end btn btn-danger bg-gradient mx-3">Delete<i
+                                class="fa fa-arrow-circle-o-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

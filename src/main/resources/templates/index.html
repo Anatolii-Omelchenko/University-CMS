@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="fragments :: head_fragment(title='Home')">
+</head>
+
+<body>
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div class="list-group main-list-group">
+            <a href="/students" class="list-group-item list-group-item-action">Students</a>
+            <a href="/teachers" class="list-group-item list-group-item-action">Teachers</a>
+            <a href="/groups" class="list-group-item list-group-item-action">Groups</a>
+            <a href="/subjects" class="list-group-item list-group-item-action">Subjects</a>
+            <a href="/lectures/all?days=0" class="list-group-item list-group-item-action">Lectures</a>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

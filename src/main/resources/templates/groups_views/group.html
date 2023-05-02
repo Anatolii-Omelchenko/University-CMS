@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:include="fragments :: head_fragment(${group.groupName})"></head>
+
+<body>
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_profile_menu(page='Group Profile', prev_page='Groups', link = @{/groups})"></div>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-success'}"/>
+        <div th:if="${error}" th:text="${error}" th:class="${'alert alert-danger'}"/>
+        <div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div th:include="fragments :: profile_row(name='Group Name', value=${group.groupName})"></div>
+                    <div th:include="fragments :: profile_row(name='Education Form', value=${group.educationForm})"></div>
+                    <div th:include="fragments :: profile_row(name='Count of students', value=${group.students.size()})"></div>
+
+                    <div class="row">
+                        <a th:href="@{/lectures/group(id=${group.id}, days = 0)}"
+                           class="btn btn-secondary w-25 mx-3"> <i
+                                class="fa fa-arrow-circle-o-left"></i>Schedule</a>
+                    </div>
+                    <hr/>
+
+                    <div sec:authorize="hasAuthority('ADMIN')" class="row justify-content-end mt-5">
+                        <a th:href="@{/admin/edit_group(id=${group.id})}"
+                           class="col-2 p-2 align-self-start btn btn-success bg-gradient mx-3">Edit<i
+                                class="fa fa-arrow-circle-o-left"></i></a>
+                        <a th:href="@{/admin/delete_group(id=${group.id})}"
+                           class="col-2 p-2 align-self-end btn btn-danger bg-gradient mx-3">Delete<i
+                                class="fa fa-arrow-circle-o-left"></i></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:if="${group.students.size() > 0}"
+             th:include="fragments :: persons_list(${group.students}, @{/students/student(id)})"></div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

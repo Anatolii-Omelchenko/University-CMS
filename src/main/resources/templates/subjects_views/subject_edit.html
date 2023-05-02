@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:include="fragments :: head_fragment(${subject.subjectName + ' - edit'})"></head>
+
+<body>
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_profile_menu(page='Subject Profile', prev_page='Subjects', link = @{/subjects})"></div>
+
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <form th:action="@{edit_subject}" th:object="${subject}" method="POST" class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Subject name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="hidden" th:field="*{id}" id="blogId">
+                                    <input th:field="*{subjectName}" type="text" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('subjectName')}" th:errors="*{subjectName}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Subject description</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:field="*{description}" type="text" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="d-flex justify-content-end">
+                                    <input type="submit" class="btn btn-secondary bg-gradient px-4" value="Save Changes">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

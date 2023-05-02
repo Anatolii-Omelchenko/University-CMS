@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head th:include="fragments :: head_fragment(title='Lectures')"></head>
+<link rel="stylesheet" href="/css/schedule.css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<body>
+<section class="main-section h-100">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+
+        <div th:if="${groupName != null}">
+            <div th:include="fragments :: nav_profile_menu(page='Lectures', prev_page=${groupName}, link = @{/groups/group(id=${groupId})})"></div>
+        </div>
+        <div th:if="${teacherName != null}">
+            <div th:include="fragments :: nav_profile_menu(page='Lectures', prev_page=${teacherName}, link = @{/teachers/teacher(id=${teacherId})})"></div>
+        </div>
+        <div th:if="${teacherName == null and groupName == null}">
+            <div th:include="fragments :: nav_menu(page='Lectures')"></div>
+        </div>
+
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-success'}"/>
+        <div th:if="${error}" th:text="${error}" th:class="${'alert alert-danger'}"/>
+        <div class="event-schedule-area-two bg-color pad100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div th:if="${groupName != null}">
+                            <div th:replace="fragments::schedule_filter(id = ${groupId}, link='/lectures/group', days = ${days})"></div>
+                        </div>
+                        <div th:if="${teacherName != null}">
+                            <div th:replace="fragments::schedule_filter(id = ${teacherId}, link='/lectures/teacher', days = ${days})"></div>
+                        </div>
+                        <div th:if="${teacherName == null and groupName == null}">
+                            <div th:replace="fragments::all_schedule_filter(link='/lectures/all', days = ${days})"></div>
+                        </div>
+
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="home" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">Date</th>
+                                            <th scope="col">Teacher</th>
+                                            <th scope="col">Information</th>
+                                            <th scope="col">Room</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="groups-list">
+                                        <tr th:each="lecture : ${lectures}" class="inner-box">
+                                            <th scope="row">
+                                                <div class="event-date">
+                                                    <span th:text="${#temporals.format(lecture.date, 'd')}">Day</span>
+                                                    <p  th:text="${lecture.date.getMonth()}">Month</p>
+                                                </div>
+                                            </th>
+                                            <td>
+                                                <div class="event-img">
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="event-wrap">
+                                                    <h3><a th:text="${lecture.group.groupName}" th:href="@{/groups/group(id=${lecture.group.id})}">Group Name</a></h3>
+                                                    <div class="meta">
+                                                        <div class="organizers">
+                                                            <a th:text="${lecture.teacher.name}" th:href="@{/teachers/teacher(id=${lecture.teacher.id})}">Teacher</a>
+                                                        </div>
+                                                        <div class="categories">
+                                                            <a th:text="${lecture.subject.subjectName}" th:href="@{/subjects/subject(id=${lecture.subject.id})}">Subject</a>
+                                                        </div>
+                                                        <div class="time">
+                                                            <span th:text="${lecture.lectureNumber.time}">Time</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span th:text="${lecture.lectureRoom.roomName}">Room</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div sec:authorize="hasAuthority('ADMIN')" class="primary-btn">
+
+                                                    <div th:if="${groupName != null}">
+                                                        <a class="btn btn-secondary" th:href="@{/admin/edit_lecture(id=${lecture.id}, type='group')}">Edit</a>
+                                                        <a class="btn btn-danger" th:href="@{/admin/delete_lecture(id=${lecture.id}, type='group')}"><i class="fa fa-trash" aria-hidden="true"></i></a>                                                    </div>
+                                                    <div th:if="${teacherName != null}">
+                                                        <a class="btn btn-secondary" th:href="@{/admin/edit_lecture(id=${lecture.id}, type='teacher')}">Edit</a>
+                                                        <a class="btn btn-danger" th:href="@{/admin/delete_lecture(id=${lecture.id}, type='teacher')}"><i class="fa fa-trash" aria-hidden="true"></i></a>                                                    </div>
+                                                    <div th:if="${teacherName == null and groupName == null}">
+                                                        <a class="btn btn-secondary" th:href="@{/admin/edit_lecture(id=${lecture.id}, type='none')}">Edit</a>
+                                                        <a class="btn btn-danger" th:href="@{/admin/delete_lecture(id=${lecture.id}, type='none')}"><i class="fa fa-trash" aria-hidden="true"></i></a>                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div sec:authorize="hasAuthority('ADMIN')" class="primary-btn text-center">
+                            <div th:if="${groupName != null}">
+                                <a th:href="@{/admin/add_lecture(type='group', id=${groupId})}" class="btn btn-success">Add new lecture</a>
+                            </div>
+                            <div th:if="${teacherName != null}">
+                                <a th:href="@{/admin/add_lecture(type='teacher', id=${teacherId})}" class="btn btn-success">Add new lecture</a>
+                            </div>
+                            <div th:if="${teacherName == null and groupName == null}">
+                                <a th:href="@{/admin/add_lecture(type='none')}" class="btn btn-success">Add new lecture</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /col end-->
+                </div>
+                <!-- /row end-->
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

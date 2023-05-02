@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:include="fragments :: head_fragment(title='Teachers')"></head>
+
+<body>
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_menu(page='Teachers')"></div>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-success'}"/>
+        <div th:if="${error}" th:text="${error}" th:class="${'alert alert-danger'}"/>
+        <div th:include="fragments :: persons_list(${teachers}, @{/teachers/teacher(id)})"></div>
+
+        <div sec:authorize="hasAuthority('ADMIN')" class="row justify-content-end mt-2">
+            <a th:href="@{/admin/add_teacher}"
+               class="col-2 p-2 align-self-end btn btn-dark mx-3">Add teacher<i
+                    class="fa fa-arrow-circle-o-left"></i></a>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+
+</html>

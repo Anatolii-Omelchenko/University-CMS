@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="fragments :: head_fragment(title='page-404')">
+</head>
+
+<link rel="stylesheet" href="/css/error-page.css">
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+    <div th:replace="fragments :: error_page(
+    code='404',
+    code_text='Page not found',
+    description='We\'re sorry, the page you were looking for isn\'t found here. The link you followed may either be broken or no longer exists. Please try again, or take a look at our.')"></div>
+    </div>
+</section>
+

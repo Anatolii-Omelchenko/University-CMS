@@ -1,0 +1,24 @@
+
+Given user is logged on as Teacher
+
+- User can see and navigate to `My Schedule` menu
+- User should see own Teacher schedule according with selected date/range filter
+- User can see personal profile
+- User can update personal data(phone, email)
+
+Given user is logged on as Student
+
+- User can see and navigate to `My Schedule` menu
+- User should see own Student schedule according with selected date/range filter
+- User can see personal profile
+- User can update personal data(phone, email)
+- User can see the profile of his group
+
+Given user is logged on as Admin
+
+- User can add new students, teachers
+- User can create new groups, subjects, lectures
+- User can see all students, teachers, subjects, groups, lectures (shedule), lecture`s rooms
+- User can update student`s profile (all data)
+- User can update teacher`s profile (all data)
+- User can update subjects, lectures (shedule), groups

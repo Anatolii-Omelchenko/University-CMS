@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head th:include="fragments :: head_fragment(${teacher.name + ' - edit'})"></head>
+
+<body>
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_profile_menu(page='Teacher Profile', prev_page='Teachers', link = @{/teachers})"></div>
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <form th:action="@{edit_teacher}" th:object="${teacher}" method="POST" class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Full Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="hidden" th:field="*{id}" id="blogId">
+                                    <input th:field="*{name}" type="text" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:field="*{email}" type="email" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:field="*{phone}" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Birthdate</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:value="${teacher.birthdate}" th:name="birthdate" th:id="birthdate" type="date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Password</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:value="${teacher.password}" th:name="password" th:id="password" type="password" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Gender</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{gender}" class="form-control">
+                                        <option th:value="'MALE'" th:text="MALE"></option>
+                                        <option th:value="'FEMALE'" th:text="FEMALE"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Academic degree</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{academicDegree}" class="form-control">
+                                        <option th:value="'TEACHER'" th:text="TEACHER"></option>
+                                        <option th:value="'DOCENT'" th:text="DOCENT"></option>
+                                        <option th:value="'PROFESSOR'" th:text="PROFESSOR"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Experience</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:field="*{experience}" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Roles</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input class="form-check-input mx-2" type="checkbox" name="roles"
+                                           th:each="role : ${allRoles}"
+                                           th:text="${role.name}"
+                                           th:value="${role.name}"
+                                           th:field="*{roles}"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="d-flex justify-content-end">
+                                    <input type="submit" class="btn btn-secondary bg-gradient px-4" value="Save Changes">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head th:include="fragments :: head_fragment(title='Subjects')"></head>
+
+<body>
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_menu(page='Subjects')"></div>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-success'}"/>
+        <div th:if="${error}" th:text="${error}" th:class="${'alert alert-danger'}"/>
+        <div>
+            <div class="card mb-4">
+                <div class="list-group" id="subjects-list">
+                    <a th:each="subject : ${subjects}" th:href="@{/subjects/subject(id=${subject.id})}"
+                       th:text="${subject.subjectName}"
+                       class="list-group-item list-group-item-action">Subject...</a>
+                </div>
+            </div>
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')" class="row justify-content-end mt-2">
+            <a th:href="@{/admin/add_subject}"
+               class="col-2 p-2 align-self-end btn btn-dark mx-3">Add subject<i
+                    class="fa fa-arrow-circle-o-left"></i></a>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

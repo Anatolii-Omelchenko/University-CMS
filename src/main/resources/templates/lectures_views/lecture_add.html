@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:include="fragments :: head_fragment('Add new lecture')"></head>
+
+<body>
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:if="${type == 'group'}">
+            <div th:include="fragments :: nav_profile_menu(page='Lectures', prev_page=${lecture.group.groupName}, link = @{/groups/group(id=${lecture.group.id})})"></div>
+        </div>
+        <div th:if="${type == 'teacher'}">
+            <div th:include="fragments :: nav_profile_menu(page='Lectures', prev_page=${lecture.teacher.name}, link = @{/teachers/teacher(id=${lecture.teacher.id})})"></div>
+        </div>
+        <div th:if="${type == 'none'}">
+            <div th:include="fragments :: nav_menu(page='Lectures')"></div>
+        </div>
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <form th:action="@{add_lecture}" th:object="${lecture}" method="POST" class="card-body">
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Date</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="hidden" th:field="*{id}" id="blogId">
+                                    <input type="hidden" name="type" th:value="${type}">
+                                    <input th:field="*{date}" type="date" id="myDate" class="form-control">
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('date')}"
+                                         th:errors="*{date}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Group</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{group}" class="form-control" id="group" name="group">
+                                        <option
+                                                th:default ="${lecture.group}"
+                                                th:each="group : ${groups}"
+                                                th:value="${group.id}"
+                                                th:text="${group.groupName}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Teacher</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{teacher}" class="form-control" id="teacher" name="teacher">
+                                        <option
+                                                th:default="${lecture.teacher}"
+                                                th:each="teacher : ${teachers}"
+                                                th:value="${teacher.id}"
+                                                th:text="${teacher.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Subject</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{subject}" class="form-control" id="subject" name="subject">
+                                        <option th:each="subject : ${subjects}"
+                                                th:value="${subject.id}"
+                                                th:text="${subject.subjectName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Lecture number</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{lectureNumber}" class="form-control" id="lectureNumber"
+                                            name="lectureNumber">
+                                        <option th:each="lectureNumber : ${lecturesNumbers}"
+                                                th:value="${lectureNumber}"
+                                                th:text="${lectureNumber + ' ' + lectureNumber.time}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Lecture Room</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{lectureRoom}" class="form-control" id="lectureRoom"
+                                            name="lectureRoom">
+                                        <option th:each="lectureRoom : ${rooms}"
+                                                th:value="${lectureRoom.id}"
+                                                th:text="${lectureRoom.roomName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="d-flex justify-content-end">
+                                    <input type="submit" class="btn btn-secondary bg-gradient px-4" value="Add lecture">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:src="@{/javascript/date.js}"></script>
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>

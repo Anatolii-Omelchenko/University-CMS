@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="fragments :: head_fragment(title='Access-denied')">
+</head>
+
+<link rel="stylesheet" href="/css/error-page.css">
+
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:replace="fragments :: error_page(
+    code='403',
+    code_text='ACCESS DENIED',
+    description='Sorry, it\'s not allowed to go beyond this point! Please, go back this way...')"></div>
+    </div>
+</section>
+

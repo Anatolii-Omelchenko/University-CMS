@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:include="fragments :: head_fragment('Add new group')"></head>
+
+<body>
+<section class="main-section">
+    <div class="container py-5">
+        <nav th:replace="fragments::nav_bar"></nav>
+        <div th:include="fragments :: nav_profile_menu(page='Group Profile', prev_page='Groups', link = @{/groups})"></div>
+
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <form th:action="@{add_group}" th:object="${group}" method="POST" class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Group name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input th:field="*{groupName}" type="text" class="form-control"/>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('groupName')}" th:errors="*{groupName}"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Education Form</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select th:field="*{educationForm}" class="form-control">
+                                        <option th:value="'PART_TIME'" th:text="PART_TIME"></option>
+                                        <option th:value="'STATIONARY'" th:text="STATIONARY"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="d-flex justify-content-end">
+                                    <input type="submit" class="btn btn-secondary bg-gradient px-4" value="Add group">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+</body>
+
+<footer th:include="fragments :: bootstrap_scripts"></footer>
+</html>
